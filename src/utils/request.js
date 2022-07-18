@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import store from '@/store'
 // import store from '@/store'
 // import router from '@/router'
 const service = axios.create({
@@ -9,9 +10,15 @@ const service = axios.create({
 })
 
 // 请求拦截器
-service.interceptors.request.use(
-
-)
+service.interceptors.request.use(config => {
+  // config 是请求的配置信息
+  if (store.getters.token) {
+    config.headers.Authorization = 'Bearer ' + store.getters.token
+  }
+  return config // 必须要返回的
+}, error => {
+  return Promise.reject(error)
+})
 // 响应拦截器
 service.interceptors.response.use(response => {
   // axios默认加了一层data

@@ -121,11 +121,13 @@ export default {
       this.loading = true
       try {
         await this.$store.dispatch('user/login', this.loginForm)
+        // async 标记的函数实际上都是一个promise对象
+        // await 下面的代码 都是成功执行的代码
         this.$router.push('/')
       } catch (error) {
         console.log(error)
-        // 不管成功还是失败都会执行finally
       } finally {
+        // 不管成功还是失败都会执行finally
         this.loading = false
       }
     }
