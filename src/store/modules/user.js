@@ -37,7 +37,7 @@ const actions = {
     const result = await getUserInfo()
     const baseInfo = await getUserDetailById(result.userId)
     const baseResult = { ...result, ...baseInfo }
-    console.log(baseResult)
+    // console.log(baseResult)
     context.commit('setUserInfo', baseResult)
     return baseResult // 后期做权限控制的时候在用
   },
