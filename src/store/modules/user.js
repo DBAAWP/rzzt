@@ -1,5 +1,5 @@
-import { login, getUserInfo } from '@/api/user'
-import { getToken, removeToken, setToken } from '@/utils/auth'
+import { login, getUserInfo, getUserDetailById } from '@/api/user'
+import { getToken, removeToken, setToken, setTimeStamp } from '@/utils/auth'
 
 const state = {
   token: getToken(), // 用户token
@@ -24,17 +24,27 @@ const mutations = {
   }
 }
 const actions = {
+  // 登录
   async login(context, data) {
     // 获取响应拦截器返回的token
-    const result = await login(data)
-    if (result) {
-      context.commit('setToken', result)
-    }
+    const result = await login(data) // 拿到token
+    context.commit('setToken', result) // 设置token
+
+    setTimeStamp() // 设置当前的时间戳
   },
+  // 用户基本信息
   async getUserInfo(context) {
     const result = await getUserInfo()
-    context.commit('setUserInfo', result)
-    return result // 后期做权限控制的时候在用
+    const baseInfo = await getUserDetailById(result.userId)
+    const baseResult = { ...result, ...baseInfo }
+    console.log(baseResult)
+    context.commit('setUserInfo', baseResult)
+    return baseResult // 后期做权限控制的时候在用
+  },
+  // 登出  删除token 删除 用户基本信息
+  logout(context) {
+    context.commit('removeToken')
+    context.commit('removeUserInfo')
   }
 }
 

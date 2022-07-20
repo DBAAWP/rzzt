@@ -11,7 +11,8 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-
+// 自定义指令
+import * as directives from '@/directives'
 import '@/icons' // icon
 import '@/permission' // permission control
 
@@ -23,7 +24,11 @@ import '@/permission' // permission control
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-
+// Object.keys把自定义里面的对象全部遍历为数组,然后去遍历
+Object.keys(directives).forEach(key => {
+  // 注册自定义指令
+  Vue.directive(key, directives[key])
+})
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明

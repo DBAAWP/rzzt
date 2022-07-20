@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'rz-token'
 
+const timekey = 'hrsaas-timestamp-key'
 export function getToken() {
   return Cookies.get(TokenKey)
 }
@@ -12,4 +13,13 @@ export function setToken(token) {
 
 export function removeToken() {
   return Cookies.remove(TokenKey)
+}
+
+// 获取时间戳
+export function getTimeStamp() {
+  return Cookies.get(timekey)
+}
+// 设置时间戳
+export function setTimeStamp() {
+  return Cookies.set(timekey, Date.now())
 }

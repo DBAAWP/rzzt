@@ -14,7 +14,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
+          <img v-imagerror="defaultImg" :src="staffPhoto" class="user-avatar">
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
@@ -44,11 +44,16 @@ export default {
     // Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      defaultImg: require('@/assets/common/head.jpg')
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar',
-      'name'
+      'name',
+      'staffPhoto'
     ])
   },
   methods: {
@@ -56,8 +61,8 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      await this.$store.dispatch('user/logout') // 因为logout是同步代码,所以async / await 可以不用写
+      this.$router.push(`/login`)
     }
   }
 }
