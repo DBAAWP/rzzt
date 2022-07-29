@@ -25,9 +25,13 @@ router.beforeEach(async(to, from, next) => {
         // 因为dispatch调用的是异步函数,如果不设为同步那么
         // 在还没有获取到用户信息的时候就会跳转页面
         // 后面有要用到用户信息的时候就会报错
-        await store.dispatch('user/getUserInfo')
+        const { roles } = await store.dispatch('user/getUserInfo')
+        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
+        next(to.path)
+      } else {
+        next()
       }
-      next()
     }
     // 没有token
   } else {

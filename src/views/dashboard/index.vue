@@ -1,14 +1,8 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <PageTools :show-before="true">
-      <template #before>
-        <span>杀你</span>
-      </template>
-      <template #after>
-        <el-button type="primary">导出111</el-button>
-      </template>
-    </PageTools>
+    <UploadExcel />
+    <ImageUpload />
   </div>
 </template>
 

@@ -15,7 +15,7 @@
               <el-table-column align="center" label="操作">
                 <template slot-scope="{row}">
 
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="success" @click="assignPerm(row.id)">分配权限</el-button>
                   <el-button size="small" type="primary" @click="editRole(row.id)">编辑</el-button>
                   <el-button size="small" type="danger" @click="deleteRole(row.id)">删除</el-button>
                 </template>
@@ -77,12 +77,33 @@
         </el-col>
       </el-row>
     </el-dialog>
+    <!-- 分配权限 -->
+    <el-dialog title="分配权限" :visible="showPermDialog" @close="btnPermCancel">
+      <el-tree
+        ref="permTree"
+        :data="permData"
+        :props="defaultProps"
+        :show-checkbox="true"
+        :check-strictly="true"
+        node-key="id"
+        :default-checked-keys="selectCheck"
+      />
+      <!-- 确定取消 -->
+      <el-row slot="footer" type="flex" justify="center">
+        <el-col :span="8">
+          <el-button size="small" @click="btnPermCancel">取消</el-button>
+          <el-button size="small" type="primary" @click="btnPermOK">确定</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { addRole, deleteRole, getCompanyInfo, getRoleDetail, getRoleList, updateRole } from '@/api/setting.js'
 import store from '@/store'
+import { assignPerm, getPermissionList } from '@/api/permisson'
+import { tranListToTreeData } from '@/utils'
 export default {
   data() {
     const checkNameRepeat = async(rule, value, callback) => {
@@ -97,8 +118,15 @@ export default {
 
     return {
       list: [],
+      permData: [], // 权限数据
+      roleId: null,
+      selectCheck: [],
+      defaultProps: {
+        label: 'name'
+      },
       formData: {}, // 公司信息
       showDialog: false, // 控制编辑部门弹窗
+      showPermDialog: false, // 权限分配弹窗
       page: {
         page: 1, // 当前页码
         pagesize: 3, // 每页条数
@@ -176,6 +204,22 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    async assignPerm(id) {
+      this.permData = tranListToTreeData(await getPermissionList(), '0')
+      this.roleId = id
+      const { permIds } = await getRoleDetail(id)
+      this.selectCheck = permIds
+      this.showPermDialog = true
+    },
+    btnPermCancel() {
+      this.selectCheck = []
+      this.showPermDialog = false
+    },
+    async btnPermOK() {
+      await assignPerm({ permIds: this.$refs.permTree.getCheckedKeys(), id: this.roleId })
+      this.$message.success('分配成功')
+      this.showPermDialog = false
     }
 
   }
