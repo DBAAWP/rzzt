@@ -12,6 +12,9 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <LangSelect class="right-menu-item" />
+      <ScreenFull class="right-menu-item" />
+      <ThemePicker class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imagerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -133,7 +136,8 @@ export default {
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+     vertical-align: middle;
+     width: 36px;
 
       &.hover-effect {
         cursor: pointer;
@@ -172,4 +176,5 @@ export default {
     }
   }
 }
+
 </style>

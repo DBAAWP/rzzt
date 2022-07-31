@@ -9,6 +9,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+import userRouter from './modules/user'
 Vue.use(Router)
 
 /* Layout */
@@ -51,7 +52,7 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: 'dashboard',
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
@@ -65,6 +66,7 @@ export const constantRoutes = [
       component: () => import('@/views/import/index.vue')
     }]
   },
+  userRouter,
   {
     path: '/404',
     component: () => import('@/views/404'),

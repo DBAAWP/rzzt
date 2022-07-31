@@ -1,16 +1,50 @@
-import layout from '@/layout'
+
+import Layout from '@/layout'
 
 export default {
-  path: '/social',
+  path: '/social_securitys',
+  component: Layout,
   name: 'social_securitys',
-  component: layout,
-  children: [{
-    // 二级路由不写的时候,表示二级路由的默认路由
-    path: '',
-    component: () => import('@/views/social'),
-    meta: {
-      title: '社保', // 这里用title,是因为左侧导航栏在遍历路由的原信息title
-      icon: 'table'
+  children: [
+    {
+      path: '',
+      component: () => import('@/views/social'),
+      name: 'social_securitys',
+      meta: {
+        title: '社保',
+        icon: 'table'
+
+      }
+    },
+    // 报表
+    {
+      path: 'detail/:id',
+      hidden: true,
+      component: () => import('@/views/social/detail'),
+      name: 'socialDetail',
+      meta: {
+        title: '社保'
+      }
+    },
+    // 历史归档
+    {
+      path: 'historicalArchiving',
+      hidden: true,
+      component: () => import('@/views/social/historical'),
+      name: 'socialHistorical',
+      meta: {
+        title: '历史归档'
+      }
+    },
+    // 月报表
+    {
+      path: 'monthStatement',
+      component: () => import('@/views/social/month'),
+      name: 'socialMonthStatement',
+      hidden: true,
+      meta: {
+        title: '当月报表'
+      }
     }
-  }]
+  ]
 }
